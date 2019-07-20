@@ -1,17 +1,16 @@
 import React from 'react';
 
-class Button extends React.Component {
-
+class Screen extends React.Component {
+    constructor(props){
+        super(props);
+    }
     render () {
-        const {...attrs} = this.props.attributes ? this.props.attributes : {};
         return (
-            <a
-            {...attrs}
-            onClick={this.props.onClick} className="button">
-                {this.props.text}
-            </a>
+            <div className="screen">
+
+            </div>
         );
     }
 }
 
-export default Button;
+export default Screen;

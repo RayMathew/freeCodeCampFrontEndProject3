@@ -1,0 +1,25 @@
+#root {
+    height: 100vh;
+}
+
+.full-screen {
+    height: inherit;
+}
+
+.grid{
+    display: grid;
+}
+
+.height16dot6{
+    height: 16.67%;
+}
+
+.height50{
+    height: 50%;
+}
+
+.screen {
+    height: 100%;
+    background-color: black;
+    color: white;
+}
