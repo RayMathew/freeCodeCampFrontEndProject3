@@ -5,10 +5,11 @@ class Button extends React.Component {
         super(props);
     }
     render () {
-        
+
         return (
             <button className="button" onClick={this.props.onClick}
-                                        disabled={this.props.disabled}>{this.props.value}</button>
+                                        disabled={this.props.disabled}
+                                        id={this.props.id}>{this.props.value}</button>
         );
     }
 }
