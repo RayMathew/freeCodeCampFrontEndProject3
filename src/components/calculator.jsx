@@ -97,78 +97,87 @@ class Calculator extends React.Component {
     };
 
     render () {
-
+        const buttonStyles = [
+            {backgroundColor: '#AC3939', color: 'white'},
+            {backgroundColor: '#F2873B', color: 'white'},
+            {backgroundColor: '#974BB0', color: 'white'},
+            {backgroundColor: '#4192E3', color: 'white'}
+        ];
         return (
             <div className="calculator">
                 <div className="height16dot6">
                     <Screen display={this.state.display}/>
                 </div>
-                <div style={{gridTemplateColumns: '50% 25% 25%'}} className="grid height16dot6">
+                <div style={{gridTemplateColumns: 'repeat(4, 25%)', gridTemplateRows: 'repeat(5, 20%)', height: 83.3+'%'}} className="grid">
                     <Button value={'AC'} onClick={this.clearDisplay}
-                                            disabled={this.state.buttonsDisabled}/>
+                                            disabled={this.state.buttonsDisabled}
+                                            style={{...buttonStyles[0], gridColumn: '1/3', gridRow: '1/2'}} />
                     <Button value={'/'} onClick={() => this.updateDisplay('/', true)}
                                             disabled={this.state.buttonsDisabled}
-                                            id={'divide'} />
+                                            id={'divide'}
+                                            style={{...buttonStyles[1], gridColumn: '3/4', gridRow: '1/2'}} />
                     <Button value={'X'} onClick={() => this.updateDisplay('*', true)}
                                             disabled={this.state.buttonsDisabled}
-                                            id={'multiply'} />
-                </div>
-                <div style={{gridTemplateColumns: 'repeat(4, 25%)'}} className="grid height16dot6">
+                                            id={'multiply'}
+                                            style={{...buttonStyles[1], gridColumn: '4/5', gridRow: '1/2'}} />
                     <Button value={7} onClick={() => this.updateDisplay(7)}
                                         disabled={this.state.buttonsDisabled}
-                                        id={'seven'} />
+                                        id={'seven'}
+                                        style={{...buttonStyles[2], gridColumn: '1/2', gridRow: '2/3'}} />
                     <Button value={8} onClick={() => this.updateDisplay(8)}
                                         disabled={this.state.buttonsDisabled}
-                                        id={'eight'} />
+                                        id={'eight'}
+                                        style={{...buttonStyles[2], gridColumn: '2/3', gridRow: '2/3'}} />
                     <Button value={9} onClick={() => this.updateDisplay(9)}
                                         disabled={this.state.buttonsDisabled}
-                                        id={'nine'} />
+                                        id={'nine'}
+                                        style={{...buttonStyles[2], gridColumn: '3/4', gridRow: '2/3'}} />
                     <Button value={'-'} onClick={() => this.updateDisplay('-', true)}
                                         disabled={this.state.buttonsDisabled}
-                                        id={'subtract'} />
-                </div>
-                <div style={{gridTemplateColumns: 'repeat(4, 25%)'}} className="grid height16dot6">
+                                        id={'subtract'}
+                                        style={{...buttonStyles[1], gridColumn: '4/5', gridRow: '2/3'}} />
                     <Button value={4} onClick={() => this.updateDisplay(4)}
                                         disabled={this.state.buttonsDisabled}
-                                        id={'four'} />
+                                        id={'four'}
+                                        style={{...buttonStyles[2], gridColumn: '1/2', gridRow: '3/4'}} />
                     <Button value={5} onClick={() => this.updateDisplay(5)}
                                         disabled={this.state.buttonsDisabled}
-                                        id={'five'} />
+                                        id={'five'}
+                                        style={{...buttonStyles[2], gridColumn: '2/3', gridRow: '3/4'}} />
                     <Button value={6} onClick={() => this.updateDisplay(6)}
                                         disabled={this.state.buttonsDisabled}
-                                        id={'six'} />
+                                        id={'six'}
+                                        style={{...buttonStyles[2], gridColumn: '3/4', gridRow: '3/4'}} />
                     <Button value={'+'} onClick={() => this.updateDisplay('+', true)}
                                         disabled={this.state.buttonsDisabled}
-                                        id={'add'} />
+                                        id={'add'}
+                                        style={{...buttonStyles[1], gridColumn: '4/5', gridRow: '3/4'}} />
+                    <Button value={1} onClick={() => this.updateDisplay(1)}
+                                        disabled={this.state.buttonsDisabled}
+                                        id={'one'}
+                                        style={{...buttonStyles[2], gridColumn: '1/2', gridRow: '4/5'}} />
+                    <Button value={2} onClick={() => this.updateDisplay(2)}
+                                        disabled={this.state.buttonsDisabled}
+                                        id={'two'}
+                                        style={{...buttonStyles[2], gridColumn: '2/3', gridRow: '4/5'}} />
+                    <Button value={3} onClick={() => this.updateDisplay(3)}
+                                        disabled={this.state.buttonsDisabled}
+                                        id={'three'}
+                                        style={{...buttonStyles[2], gridColumn: '3/4', gridRow: '4/5'}} />
+                    <Button value={'='} onClick={() => this.calculateResult()}
+                                            disabled={this.state.buttonsDisabled}
+                                            id={'equals'}
+                                            style={{...buttonStyles[3], gridColumn: '4/5', gridRow: '4/6'}} />
+                    <Button value={0} onClick={() => this.updateDisplay(0)}
+                                        disabled={this.state.buttonsDisabled}
+                                        id={'zero'}
+                                        style={{...buttonStyles[2], gridColumn: '1/3', gridRow: '5/6'}} />
+                    <Button value={'.'} onClick={() => this.updateDisplay('.')}
+                                        disabled={this.state.buttonsDisabled}
+                                        id={'decimal'}
+                                        style={{...buttonStyles[2], gridColumn: '3/4', gridRow: '5/6'}} />
                 </div>
-                <div style={{display: 'grid', gridTemplateColumns: '75% 25%', height: 33.34+'%'}}>
-                    <div style={{height: 100+'%'}}>
-                        <div style={{gridTemplateColumns: 'repeat(3, 33.3%)'}} className="grid height50">
-                            <Button value={1} onClick={() => this.updateDisplay(1)}
-                                                disabled={this.state.buttonsDisabled}
-                                                id={'one'} />
-                            <Button value={2} onClick={() => this.updateDisplay(2)}
-                                                disabled={this.state.buttonsDisabled}
-                                                id={'two'} />
-                            <Button value={3} onClick={() => this.updateDisplay(3)}
-                                                disabled={this.state.buttonsDisabled}
-                                                id={'three'} />
-                        </div>
-                        <div style={{gridTemplateColumns: '66.7% 33.3%'}} className="grid height50">
-                            <Button value={0} onClick={() => this.updateDisplay(0)}
-                                                disabled={this.state.buttonsDisabled}
-                                                id={'zero'} />
-                            <Button value={'.'} onClick={() => this.updateDisplay('.')}
-                                                disabled={this.state.buttonsDisabled}
-                                                id={'decimal'} />
-                        </div>
-                    </div>
-                    <div style={{display: 'grid', gridTemplateColumns: '100%'}}>
-                        <Button value={'='} onClick={() => this.calculateResult()}
-                                                disabled={this.state.buttonsDisabled}
-                                                id={'equals'} />
-                    </div>
-                </div>
+
             </div>
         );
     }
