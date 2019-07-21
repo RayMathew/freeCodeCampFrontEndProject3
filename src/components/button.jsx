@@ -7,7 +7,8 @@ class Button extends React.Component {
     render () {
         const {...attrs} = this.props.attributes ? this.props.attributes : {};
         return (
-            <button className="button">{this.props.value}</button>
+            <button className="button" onClick={this.props.onClick}
+                                        disabled={this.props.disabled}>{this.props.value}</button>
         );
     }
 }

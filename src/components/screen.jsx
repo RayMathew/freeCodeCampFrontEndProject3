@@ -7,9 +7,7 @@ class Screen extends React.Component {
     render () {
         return (
             <div className="screen">
-                <span className="display">
-                    9
-                </span>
+                <span className="display">{this.props.display}</span>
             </div>
         );
     }
