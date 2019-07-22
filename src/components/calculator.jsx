@@ -33,18 +33,22 @@ class Calculator extends React.Component {
         if (value === '.' && ((currentDisplay.slice(-1) === '.') || (this.state.lastNumber.includes('.')))){
             return ;
         }
-        if (this.state.lastInputWasAnOperator && isOperator){
-            currentDisplay = currentDisplay.replace(/..$/, value + ' ');
+        if (this.state.lastInputWasAnOperator && isOperator && value !== '-'){
+            while(!/\d$/.test(currentDisplay)){
+                console.log("asdas", currentDisplay);
+                currentDisplay = currentDisplay.substring(0, currentDisplay.length -1 );
+            }
+            currentDisplay = currentDisplay + ` ${value} `
             this.setState({
                 display: currentDisplay
             });
             return ;
         }
-        if (this.state.evaluated){
-            if (isOperator){
-                return ;
-            }
-            console.log("here");
+        if (this.state.lastInputWasAnOperator && isOperator && currentDisplay.slice(-1, currentDisplay.length) === '-'){
+
+        }
+        if (this.state.evaluated && !isOperator){
+
             this.setState({
                 display: value.toString(),
                 lastNumber: value.toString(),
@@ -79,14 +83,21 @@ class Calculator extends React.Component {
             this.setState({
                 display: currentDisplay,
                 lastNumber: lastNumber,
-                lastInputWasAnOperator: false
+                lastInputWasAnOperator: false,
+                evaluated: false
             });
         }
         else {
+            let lastNumber = currentDisplay.slice(currentDisplay.lastIndexOf(' '), currentDisplay.length);
+            if (lastNumber === ' '){
+                let displayWithoutLastOperator = currentDisplay.slice(0, -3);
+                lastNumber = displayWithoutLastOperator.lastIndexOf(' ') === -1? displayWithoutLastOperator : displayWithoutLastOperator.slice(displayWithoutLastOperator.lastIndexOf(' '));
+            }
             this.setState({
                 display: currentDisplay + ` ${value} `,
-                lastNumber: currentDisplay.slice(currentDisplay.lastIndexOf(' '), currentDisplay.length),
-                lastInputWasAnOperator: true
+                lastNumber: lastNumber,
+                lastInputWasAnOperator: true,
+                evaluated: false
             })
         }
     };
@@ -101,6 +112,7 @@ class Calculator extends React.Component {
         this.setState({
             display: answer.toString(),
             evaluated: true,
+            lastNumber: answer.toString(),
             lastInputWasAnOperator: false
         });
     };
