@@ -6,62 +6,86 @@ class Calculator extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            display: 0,
+            display: '0',
+            lastNumber: '0',
             buttonsDisabled: false,
+            evaluated: false,
             lastInputWasAnOperator: false
         };
     }
 
     clearDisplay = () => {
         this.setState({
-            display: 0
+            display: '0',
+            lastNumber: '0',
+            evaluated: false
         });
     };
 
     updateDisplay = (value, isOperator) => {
-        const displayLength = document.getElementsByClassName('display')[0].offsetWidth;
+        const displayLength = document.getElementById('display').offsetWidth;
         const screenLength = document.getElementsByClassName('screen')[0].offsetWidth;
         let currentDisplay = this.state.display.toString();
         if (displayLength/screenLength >= 0.92){
             this.flashLimit();
             return ;
         }
-        if (value === '.' && (currentDisplay.includes('.'))){
+        if (value === '.' && ((currentDisplay.slice(-1) === '.') || (this.state.lastNumber.includes('.')))){
             return ;
         }
         if (this.state.lastInputWasAnOperator && isOperator){
             currentDisplay = currentDisplay.replace(/..$/, value + ' ');
-            console.log("hi", currentDisplay);
             this.setState({
                 display: currentDisplay
             });
             return ;
         }
-        if (this.state.display === 0){
+        if (this.state.evaluated){
+            if (isOperator){
+                return ;
+            }
+            console.log("here");
+            this.setState({
+                display: value.toString(),
+                lastNumber: value.toString(),
+                evaluated: false
+            });
+            return ;
+        }
+        if (this.state.display === '0'){
             if (value === '.'){
                 this.setState({
                     display: '0.',
+                    lastNumber: '0.',
                     lastInputWasAnOperator: false
                 });
             }
+            else if (isOperator){
+                return ;
+            }
             else {
                 this.setState({
-                    display: value,
+                    display: value.toString(),
+                    lastNumber: value.toString(),
                     lastInputWasAnOperator: false
                 });
             }
             return ;
         }
         if (!isOperator){
+            currentDisplay = currentDisplay + `${value}`;
+            let lastNumber = currentDisplay.lastIndexOf(' ') === -1? currentDisplay : currentDisplay.slice(currentDisplay.lastIndexOf(' '));
+            console.log("hi", lastNumber);
             this.setState({
-                display: currentDisplay + `${value}`,
+                display: currentDisplay,
+                lastNumber: lastNumber,
                 lastInputWasAnOperator: false
             });
         }
         else {
             this.setState({
                 display: currentDisplay + ` ${value} `,
-                expression: currentDisplay + ` ${value} `,
+                lastNumber: currentDisplay.slice(currentDisplay.lastIndexOf(' '), currentDisplay.length),
                 lastInputWasAnOperator: true
             })
         }
@@ -75,14 +99,14 @@ class Calculator extends React.Component {
         }
         let answer = (Math.round(1000000000000 * eval(currentDisplay)) / 1000000000000);
         this.setState({
-            display: answer,
+            display: answer.toString(),
+            evaluated: true,
             lastInputWasAnOperator: false
         });
     };
 
     flashLimit = () => {
         const currentDisplay = this.state.display;
-        console.log("hi");
         this.setState({
             display: 'LIMIT MET',
             buttonsDisabled: true
@@ -111,59 +135,60 @@ class Calculator extends React.Component {
                 <div style={{gridTemplateColumns: 'repeat(4, 25%)', gridTemplateRows: 'repeat(5, 20%)', height: 83.3+'%'}} className="grid">
                     <Button value={'AC'} onClick={this.clearDisplay}
                                             disabled={this.state.buttonsDisabled}
-                                            style={{...buttonStyles[0], gridColumn: '1/3', gridRow: '1/2'}} />
+                                            id={'clear'}
+                                            style={{...buttonStyles[0], gridColumn: '1/3'}} />
                     <Button value={'/'} onClick={() => this.updateDisplay('/', true)}
                                             disabled={this.state.buttonsDisabled}
                                             id={'divide'}
-                                            style={{...buttonStyles[1], gridColumn: '3/4', gridRow: '1/2'}} />
+                                            style={buttonStyles[1]} />
                     <Button value={'X'} onClick={() => this.updateDisplay('*', true)}
                                             disabled={this.state.buttonsDisabled}
                                             id={'multiply'}
-                                            style={{...buttonStyles[1], gridColumn: '4/5', gridRow: '1/2'}} />
+                                            style={buttonStyles[1]} />
                     <Button value={7} onClick={() => this.updateDisplay(7)}
                                         disabled={this.state.buttonsDisabled}
                                         id={'seven'}
-                                        style={{...buttonStyles[2], gridColumn: '1/2', gridRow: '2/3'}} />
+                                        style={buttonStyles[2]} />
                     <Button value={8} onClick={() => this.updateDisplay(8)}
                                         disabled={this.state.buttonsDisabled}
                                         id={'eight'}
-                                        style={{...buttonStyles[2], gridColumn: '2/3', gridRow: '2/3'}} />
+                                        style={buttonStyles[2]} />
                     <Button value={9} onClick={() => this.updateDisplay(9)}
                                         disabled={this.state.buttonsDisabled}
                                         id={'nine'}
-                                        style={{...buttonStyles[2], gridColumn: '3/4', gridRow: '2/3'}} />
+                                        style={buttonStyles[2]} />
                     <Button value={'-'} onClick={() => this.updateDisplay('-', true)}
                                         disabled={this.state.buttonsDisabled}
                                         id={'subtract'}
-                                        style={{...buttonStyles[1], gridColumn: '4/5', gridRow: '2/3'}} />
+                                        style={buttonStyles[1]} />
                     <Button value={4} onClick={() => this.updateDisplay(4)}
                                         disabled={this.state.buttonsDisabled}
                                         id={'four'}
-                                        style={{...buttonStyles[2], gridColumn: '1/2', gridRow: '3/4'}} />
+                                        style={buttonStyles[2]} />
                     <Button value={5} onClick={() => this.updateDisplay(5)}
                                         disabled={this.state.buttonsDisabled}
                                         id={'five'}
-                                        style={{...buttonStyles[2], gridColumn: '2/3', gridRow: '3/4'}} />
+                                        style={buttonStyles[2]} />
                     <Button value={6} onClick={() => this.updateDisplay(6)}
                                         disabled={this.state.buttonsDisabled}
                                         id={'six'}
-                                        style={{...buttonStyles[2], gridColumn: '3/4', gridRow: '3/4'}} />
+                                        style={buttonStyles[2]} />
                     <Button value={'+'} onClick={() => this.updateDisplay('+', true)}
                                         disabled={this.state.buttonsDisabled}
                                         id={'add'}
-                                        style={{...buttonStyles[1], gridColumn: '4/5', gridRow: '3/4'}} />
+                                        style={buttonStyles[1]} />
                     <Button value={1} onClick={() => this.updateDisplay(1)}
                                         disabled={this.state.buttonsDisabled}
                                         id={'one'}
-                                        style={{...buttonStyles[2], gridColumn: '1/2', gridRow: '4/5'}} />
+                                        style={buttonStyles[2]} />
                     <Button value={2} onClick={() => this.updateDisplay(2)}
                                         disabled={this.state.buttonsDisabled}
                                         id={'two'}
-                                        style={{...buttonStyles[2], gridColumn: '2/3', gridRow: '4/5'}} />
+                                        style={buttonStyles[2]} />
                     <Button value={3} onClick={() => this.updateDisplay(3)}
                                         disabled={this.state.buttonsDisabled}
                                         id={'three'}
-                                        style={{...buttonStyles[2], gridColumn: '3/4', gridRow: '4/5'}} />
+                                        style={buttonStyles[2]} />
                     <Button value={'='} onClick={() => this.calculateResult()}
                                             disabled={this.state.buttonsDisabled}
                                             id={'equals'}
@@ -175,7 +200,7 @@ class Calculator extends React.Component {
                     <Button value={'.'} onClick={() => this.updateDisplay('.')}
                                         disabled={this.state.buttonsDisabled}
                                         id={'decimal'}
-                                        style={{...buttonStyles[2], gridColumn: '3/4', gridRow: '5/6'}} />
+                                        style={buttonStyles[2]} />
                 </div>
 
             </div>

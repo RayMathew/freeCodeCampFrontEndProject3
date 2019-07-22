@@ -49,10 +49,10 @@
     color: white;
     font-family: 'Digital';
     position: relative;
-    margin-right: -1px;
+    margin-right: -3px;
 }
 
-.display {
+#display {
     position: absolute;
     right: 8px;
     bottom: 0;
